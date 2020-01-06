@@ -1,0 +1,104 @@
+@import '~antd/es/style/themes/default.less';
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.colorWeak {
+  filter: invert(80%);
+}
+
+.ant-layout {
+  min-height: 100vh;
+}
+
+canvas {
+  display: block;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ant-pro-basicLayout {
+  width: 100%;
+  height: 100%;
+}
+
+.ant-pro-sider-menu-sider {
+  /* Firefox */
+  scrollbar-width: none;
+  /* IE 10+ */
+  -ms-overflow-style: none;
+}
+
+.ant-pro-sider-menu-sider::-webkit-scrollbar {
+  /* Chrome Safari */
+  display: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+@media (max-width: @screen-xs) {
+  .ant-table {
+    width: 100%;
+    overflow-x: auto;
+
+    &-thead>tr,
+    &-tbody>tr {
+
+      >th,
+      >td {
+        white-space: pre;
+
+        >span {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+/* 表格搜索样式 */
+.ant-pro-table-form-search .ant-col {
+  width: 25% !important;
+}
+
+.ant-pro-table-form-search .ant-pro-table-form-search-option {
+  float: right;
+}
+
+/* 表单后label */
+.form-right-label {
+  width: 30%;
+  text-align: right;
+  display: inline-block;
+}
+
+.form-left-label {
+  width: 70% !important;
+}
+
+/* 自定义颜色样式 */
+.chenxu-danger {
+  color: @error-color;
+}
+
+.chenxu-danger:hover {
+  color: tint(@error-color, 30%);
+}
+
+.chenxu-success {
+  color: @success-color;
+}
+
+.chenxu-success:hover {
+  color: tint(@success-color, 30%);
+}
