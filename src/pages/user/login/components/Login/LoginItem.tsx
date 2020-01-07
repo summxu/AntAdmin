@@ -152,7 +152,7 @@ class WrapFormItem extends Component<LoginItemProps, LoginItemState> {
               {getFieldDecorator(name, options)(<Input {...customProps} {...inputProps} />)}
             </Col>
             <Col span={8}>
-              <img style={{ height: '80%', width: "100%" }} src="https://via.placeholder.com/100x30"></img>
+              <img style={{ height: '80%', width: "100%" }} src="/api/kaptcha"></img>
             </Col>
           </Row>
         </FormItem>
