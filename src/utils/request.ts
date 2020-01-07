@@ -1,7 +1,7 @@
 /*
  * @Auth: Chenxu
  * @Date: 2019-12-10 16:14:47
- * @LastEditTime : 2020-01-06 17:39:29
+ * @LastEditTime : 2020-01-07 11:44:12
  */
 /**
  * request 网络请求工具
@@ -10,6 +10,7 @@
 import { extend } from 'umi-request';
 import { notification } from 'antd';
 import qs from 'qs';
+import router from 'umi/router';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -53,7 +54,7 @@ const errorHandler = (error: { response: any, responseChenxu?: any }): Response 
       message: '网络异常'
     });
   }
-  throw new Error(response ? response.errorText : '网络异常');
+  throw new Error(response ? (codeMessage[response.status] || response.statusText) : '网络异常');
 };
 
 /**
@@ -80,15 +81,20 @@ request.interceptors.request.use((url, options) => {
 // 提前对响应做异常处理
 request.interceptors.response.use(async (response: Response) => {
   const data = await response.clone().json();
-  if (data.status === 20000 || data.status === 20001 || data.status === 200002) {
+  if (data.status === 20000 || data.status === 200002 || data.status === 20001) {
+    if (data.status === 20001) {
+      /* 登录失效 */
+      router.push('/user/login');
+    }
     return Promise.reject({
       responseChenxu: {
-        errorText: data.message,
+        statusText: data.message,
         status: data.status,
         noAlert: data.noAlert
       }
     });
   }
+
   return response;
 });
 

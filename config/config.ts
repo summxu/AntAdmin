@@ -124,6 +124,16 @@ export default {
                   icon: 'instagram',
                   path: '/third/beaufity',
                   component: './Third/Beaufity',
+                }, {
+                  name: '七牛云配置',
+                  icon: 'ant-cloud',
+                  path: '/third/qiniu',
+                  component: './Third/Qiniu',
+                }, {
+                  name: '极光推送配置',
+                  icon: 'slack',
+                  path: '/third/jiguang',
+                  component: './Third/Jiguang',
                 }
               ],
             }, {
@@ -223,7 +233,7 @@ export default {
   // chainWebpack: webpackPlugin,
   proxy: {
     '/api/': {
-      target: 'http://192.168.0.12:8080',
+      target: 'http://192.168.0.119:8080',
       changeOrigin: true, // pathRewrite: { '^/api': '' },
     },
   },
