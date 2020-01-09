@@ -159,10 +159,16 @@ const TableList: React.FC<TableListProps> = () => {
             </Button.Group>
           ),
         ]}
-        request={params => queryRule(params).catch(err => { console.log(err) })}
-        postData={(data: any): any[] => {
-          return data.list
-        }}
+        request={params => queryRule(params).then(res => {
+          return {
+            data: res.data.list,
+            success: true,
+            total: res.data.total
+          };
+        }).catch(error => {
+          console.log(error);
+          return Promise.reject(error)
+        })}
         columns={columns}
       />
       {/* 打开窗口 */}
