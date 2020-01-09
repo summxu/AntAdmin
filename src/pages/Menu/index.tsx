@@ -1,9 +1,9 @@
 import { Button, Divider, Form, message } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import ProTable, { ProColumns, UseFetchDataAction } from '@ant-design/pro-table';
+import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import CreateForm from './components/CreateForm';
 
 import { TableListItem } from './data.d';
@@ -16,7 +16,7 @@ interface TableListProps extends FormComponentProps { }
  *  删除节点
  * @param selectedRows
  */
-const handleRemove = async (record: TableListItem, action: UseFetchDataAction<any>) => {
+const handleRemove = async (record: TableListItem, action: ActionType) => {
   const hide = message.loading('正在删除...');
   try {
     var params = {
@@ -37,8 +37,7 @@ const status = ['菜单', '功能'];
 const TableList: React.FC<TableListProps> = () => {
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [windowObj, setWindowObj] = useState<any>({});
-  const [actionRef, setActionRef] = useState<UseFetchDataAction<{ data: TableListItem[] }>>();
-
+  const actionRef = useRef<ActionType>();
   /* 处理增加修改接口 */
   const handleOption = async (params: any) => {
     const hide = message.loading('正在执行');
@@ -136,12 +135,12 @@ const TableList: React.FC<TableListProps> = () => {
     <PageHeaderWrapper>
       <ProTable<TableListItem>
         headerTitle="查询表格"
-        onInit={setActionRef}
+        actionRef={actionRef}
         rowKey="id"
         rowSelection={{
           type: "checkbox"
         }}
-        renderToolBar={(action, { selectedRows }) => [
+        toolBarRender={(action, { selectedRows }) => [
           <Button type="primary" onClick={e => {
             setWindowObj({
               type: 'create',
@@ -161,7 +160,7 @@ const TableList: React.FC<TableListProps> = () => {
           ),
         ]}
         request={params => queryRule(params).catch(err => { console.log(err) })}
-        filterDate={(data: any): any[] => {
+        postData={(data: any): any[] => {
           return data.list
         }}
         columns={columns}
@@ -171,7 +170,7 @@ const TableList: React.FC<TableListProps> = () => {
         onSubmit={async (value: any) => {
           await handleOption(value);
           handleModalVisible(false);
-          actionRef!.reload();
+          actionRef.current!.reload();
         }}
         onCancel={() => handleModalVisible(false)}
         modalVisible={createModalVisible}

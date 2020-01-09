@@ -1,9 +1,9 @@
 import { Badge, Button, Divider, Avatar, Form, message, Modal, Input } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import CreateForm from './components/CreateForm';
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import ProTable, { ProColumns, UseFetchDataAction } from '@ant-design/pro-table';
+import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from './data.d';
 
 import { queryRule, cancel_sign, sign, commit } from './service';
@@ -17,7 +17,7 @@ const status = ['未审核', '审核成功', '审核失败', '删除'];
 
 
 /* 签约、取消签约 */
-const signOption = async (type: string, record: TableListItem, action: UseFetchDataAction<any>) => {
+const signOption = async (type: string, record: TableListItem, action: ActionType) => {
   const hide = message.loading('正在执行');
   try {
     var params = {
@@ -45,7 +45,7 @@ const TableList: React.FC<TableListProps> = () => {
   const [action, setAction] = useState<any>({})
   const [windowObj, setWindowObj] = useState<any>({});
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
-  const [actionRef, setActionRef] = useState<UseFetchDataAction<{ data: TableListItem[] }>>();
+  const actionRef = useRef<ActionType>();
 
   /* 处理增加修改接口 */
   const handleOption = async (params: any) => {
@@ -205,12 +205,11 @@ const TableList: React.FC<TableListProps> = () => {
       <ProTable<TableListItem>
         headerTitle="查询表格"
         rowKey="id"
-        onInit={setActionRef}
+        actionRef={actionRef}
         rowSelection={{
           type: "checkbox"
         }}
-        renderToolBar={(action, { selectedRows }) => [
-
+        toolBarRender={(action, { selectedRows }) => [
           <Button type="primary" onClick={e => {
             setWindowObj({
               type: 'create',
@@ -237,7 +236,7 @@ const TableList: React.FC<TableListProps> = () => {
           ),
         ]}
         request={params => queryRule(params).catch(err => { console.log('wqdasdasdasdasdasdasdasd') })}
-        filterDate={(data: any): any[] => {
+        postData={(data: any): any[] => {
           return data.list
         }}
         columns={columns}
@@ -248,7 +247,7 @@ const TableList: React.FC<TableListProps> = () => {
         onSubmit={async (value: any) => {
           await handleOption(value);
           handleModalVisible(false);
-          actionRef!.reload();
+          actionRef.current!.reload();
         }}
         onCancel={() => handleModalVisible(false)}
         modalVisible={createModalVisible}

@@ -1,9 +1,9 @@
-import { Badge, Button, Divider, Avatar, Form, message, Modal, Input } from 'antd';
+import { Form, message, Modal, Input } from 'antd';
 import React, { useState } from 'react';
 
 import { FormComponentProps } from 'antd/es/form';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import ProTable, { ProColumns, UseFetchDataAction } from '@ant-design/pro-table';
+import ProTable, { ProColumns, ActionType } from '@ant-design/pro-table';
 import { TableListItem } from './data.d';
 
 import { queryRule, cancel_sign, sign } from './service';
@@ -14,7 +14,7 @@ const { TextArea } = Input
 interface TableListProps extends FormComponentProps { }
 
 /* 签约、取消签约 */
-const signOption = async (type: string, record: TableListItem, action: UseFetchDataAction<any>) => {
+const signOption = async (type: string, record: TableListItem, action: ActionType) => {
   const hide = message.loading('正在执行');
   try {
     var params: any = {
@@ -34,9 +34,6 @@ const signOption = async (type: string, record: TableListItem, action: UseFetchD
     console.log(error);
   }
 }
-
-const status = ['审核中', '已通过', '被拒绝'];
-const statusMap = ['processing', 'success', 'error'];
 
 const TableList: React.FC<TableListProps> = () => {
 
@@ -98,7 +95,7 @@ const TableList: React.FC<TableListProps> = () => {
           type: "checkbox"
         }}
         request={(params: any) => queryRule(params).catch(err => { console.log(err) })}
-        filterDate={(data: any): any[] => {
+        postData={(data: any): any[] => {
           return data.list
         }}
         columns={columns}
