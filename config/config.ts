@@ -110,6 +110,11 @@ export default {
               path: '/menu',
               component: './Menu'
             }, {
+              name: '系统角色',
+              icon: 'car',
+              path: '/role',
+              component: './Role'
+            }, {
               name: '第三方配置',
               icon: 'heat-map',
               path: '/third',
