@@ -1,7 +1,7 @@
 /*
  * @Auth: Chenxu
  * @Date: 2019-12-10 16:14:47
- * @LastEditTime : 2020-01-07 11:44:12
+ * @LastEditTime : 2020-01-09 13:35:55
  */
 /**
  * request 网络请求工具
@@ -84,7 +84,7 @@ request.interceptors.response.use(async (response: Response) => {
   if (data.status === 20000 || data.status === 200002 || data.status === 20001) {
     if (data.status === 20001) {
       /* 登录失效 */
-      router.push('/user/login');
+      router.replace('/user/login');
     }
     return Promise.reject({
       responseChenxu: {
